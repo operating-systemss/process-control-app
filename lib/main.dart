@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           getPages: AppPages.appPages,
           defaultTransition: Transition.native,
           theme: AppThemeLight.instance.theme,
-          home: const ProcessView(),
+          home:  ProcessView(),
         );
       },
     );

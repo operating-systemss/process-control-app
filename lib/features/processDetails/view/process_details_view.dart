@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:system_monitor/features/processDetails/controller/process_details_controller.dart';
+import 'package:http/http.dart' as http;
 
 class ProcessDetailsView extends StatelessWidget {
   ProcessDetailsView({
@@ -56,8 +57,13 @@ class ProcessDetailsView extends StatelessWidget {
                       height: 50,
                     ),
                     ElevatedButton(
-                        onPressed: () {
-                          processDetailsController.closeProgram(processDetailsController.arguments.pid.toString());
+                        onPressed: () async {
+                          // processDetailsController.closeProgram(processDetailsController.arguments.pid.toString());
+                          var url = Uri.parse('http://localhost:3000/process/' + processDetailsController.arguments.pid.toString());
+                          var response = await http.delete(url).then((value) {
+                            print('object');
+                          });
+                          print('object');
                         },
                         child: const Text(
                           'Close Program',

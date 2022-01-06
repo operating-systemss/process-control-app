@@ -18,7 +18,7 @@ class _ProcessViewState extends State<ProcessView> {
   // List<ProcessInfoModel> processList = [];
   // List<String> processNameList = [];
   DocumentReference get getProcesses => firebaseFirestore.collection('data').doc('process');
-  List<ProcessInfoModel> processModelList = [];
+  // List<ProcessInfoModel> snapshot.data!.data()['doc'] = [];
 
   @override
   void initState() {
@@ -54,98 +54,129 @@ class _ProcessViewState extends State<ProcessView> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-          stream: getProcesses.snapshots(),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              processModelList.add(ProcessInfoModel.fromJson(snapshot.data!.data()));
-              snapshot.data!.data();
-              snapshot.data!.data().forEach((k, v) => processModelList.add(ProcessInfoModel.fromJson(v)));
-            }
-            return !snapshot.hasData
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    itemCount: snapshot.data!.data().length,
-                    itemBuilder: (context, index) {
-                      return processModelList[index].cmd.toString().contains(RegExp('([.app])\app+'))
-                          ? processModelList[index].cmd.toString().length > 14
-                              ? !processModelList[index]
-                                      .cmd
-                                      .toString()
-                                      .substring(14, processModelList[index].cmd.toString().indexOf(RegExp('([.app])\app+')))
-                                      .toString()
-                                      .contains('/')
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Get.toNamed(Routes.PROCESS_DETAILS,
-                                              arguments: ProcessDetailsModel(
-                                                  name: processModelList[index]
-                                                      .cmd
-                                                      .toString()
-                                                      .substring(14, processModelList[index].cmd.toString().indexOf(RegExp('([.app])\app+')))
-                                                      .toString(),
-                                                  cpu: processModelList[index].cpu,
-                                                  memory: processModelList[index].memory,
-                                                  pid: processModelList[index].pid,
-                                                  ppid: processModelList[index].ppid,
-                                                  uid: processModelList[index].uid));
-                                        },
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Colors.transparent,
-                                            border: Border.all(
-                                              color: Colors.blue,
+      body: SafeArea(
+        child: StreamBuilder<DocumentSnapshot>(
+            stream: getProcesses.snapshots(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                // snapshot.data!.data()['doc'].add(snapshot.data!.data()['doc']);
+                snapshot.data!.data();
+
+                // snapshot.data!.data()['doc'] = snapshot.data!.data()['doc'];
+                // snapshot.data!.data().forEach((k, v) => snapshot.data!.data()['doc'].add(ProcessInfoModel.fromJson(v)));
+
+                for (var i = 0; i < snapshot.data!.data()['doc'].length; i++) {
+                  print(snapshot.data!.data()['doc'][i]['pid'].toString());
+                  if (snapshot.data!.data()['doc'][i]['cmd'].toString().contains(RegExp('([.app])\app+'))) {
+                    if (snapshot.data!.data()['doc'][i]['cmd'].toString().length > 14) {
+                      if (!snapshot.data!
+                          .data()['doc'][i]['cmd']
+                          .toString()
+                          .substring(14, snapshot.data!.data()['doc'][i]['cmd'].toString().indexOf(RegExp('([.app])\app+')))
+                          .toString()
+                          .contains('/')) {
+                        // print(snapshot.data!
+                        //     .data()['doc'][i]['cmd']
+                        //     .toString()
+                        //     .substring(14, snapshot.data!.data()['doc'][i]['cmd'].toString().indexOf(RegExp('([.app])\app+')))
+                        //     .toString());
+                      }
+                    }
+                  }
+                }
+                print('---------------------------------------');
+              }
+              return !snapshot.hasData
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      itemCount: snapshot.data!.data()['doc'].length,
+                      itemBuilder: (context, index) {
+                        return snapshot.data!.data()['doc'][index]['cmd'].toString().contains(RegExp('([.app])\app+'))
+                            ? snapshot.data!.data()['doc'][index]['cmd'].toString().length > 14
+                                ? !snapshot.data!
+                                        .data()['doc'][index]['cmd']
+                                        .toString()
+                                        .substring(14, snapshot.data!.data()['doc'][index]['cmd'].toString().indexOf(RegExp('([.app])\app+')))
+                                        .toString()
+                                        .contains('/')
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Get.toNamed(Routes.PROCESS_DETAILS,
+                                                arguments: ProcessDetailsModel(
+                                                    name: snapshot.data!
+                                                        .data()['doc'][index]['cmd']
+                                                        .toString()
+                                                        .substring(14,
+                                                            snapshot.data!.data()['doc'][index]['cmd'].toString().indexOf(RegExp('([.app])\app+')))
+                                                        .toString(),
+                                                    cpu: snapshot.data!.data()['doc'][index]['cpu'],
+                                                    memory: snapshot.data!.data()['doc'][index]['memory'],
+                                                    pid: snapshot.data!.data()['doc'][index]['pid'],
+                                                    ppid: snapshot.data!.data()['doc'][index]['ppid'],
+                                                    uid: snapshot.data!.data()['doc'][index]['uid']));
+                                          },
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              color: Colors.transparent,
+                                              border: Border.all(
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                !snapshot.data!.data()['doc'][index]['name'].toString().contains('Helper')
+                                                    ? Positioned(right: 0, child: Icon(Icons.star))
+                                                    : Visibility(
+                                                        visible: false,
+                                                        child: Text(''),
+                                                      ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'İsim : ' + snapshot.data!.data()['doc'][index]['name'].toString(),
+                                                      style: const TextStyle(fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      'CPU : ' + snapshot.data!.data()['doc'][index]['cpu'].toString(),
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      'Memory : ' + snapshot.data!.data()['doc'][index]['memory'].toString(),
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      'PID : ' + snapshot.data!.data()['doc'][index]['pid'].toString(),
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      'PPID : ' + snapshot.data!.data()['doc'][index]['ppid'].toString(),
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                    Text(
+                                                      'UID : ' + snapshot.data!.data()['doc'][index]['uid'].toString(),
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'İsim : ' +
-                                                    processModelList[index]
-                                                        .cmd
-                                                        .toString()
-                                                        .substring(14, processModelList[index].cmd.toString().indexOf(RegExp('([.app])\app+')))
-                                                        .toString(),
-                                                style: const TextStyle(fontSize: 18),
-                                              ),
-                                              Text(
-                                                'CPU : ' + processModelList[index].cpu.toString(),
-                                                style: TextStyle(fontSize: 18),
-                                              ),
-                                              Text(
-                                                'Memory : ' + processModelList[index].memory.toString(),
-                                                style: TextStyle(fontSize: 18),
-                                              ),
-                                              // Text(
-                                              //   'PID : ' + processModelList[index].pid.toString(),
-                                              //   style: TextStyle(fontSize: 18),
-                                              // ),
-                                              // Text(
-                                              //   'PPID : ' + processModelList[index].ppid.toString(),
-                                              //   style: TextStyle(fontSize: 18),
-                                              // ),
-                                              // Text(
-                                              //   'UID : ' + processModelList[index].uid.toString(),
-                                              //   style: TextStyle(fontSize: 18),
-                                              // ),
-                                            ],
-                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : Visibility(visible: false, child: Text(''))
-                              : Visibility(visible: false, child: Text(''))
-                          : Visibility(visible: false, child: Text(''));
-                    });
-          }),
+                                      )
+                                    : Visibility(visible: false, child: Text(''))
+                                : Visibility(visible: false, child: Text(''))
+                            : Visibility(visible: false, child: Text(''));
+                      });
+            }),
+      ),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
@@ -16,22 +16,25 @@ class ProcessDetailsController extends GetxController {
   }
 
   Future<void> closeProgram(String processId) async {
-    changePasswordShow();
-    try {
-      final response = await Dio().delete(
-        'http://localhost:3000/process/'+processId,
-      );
-      switch (response.statusCode) {
-        case HttpStatus.ok:
-          changePasswordShow();
-          return response.data;
-        default:
-          changePasswordShow();
-          return print(response.statusMessage.toString());
-      }
-    } catch (e) {
-      changePasswordShow();
-      throw Exception(e);
-    }
+    // changePasswordShow();
+    // try {
+    //   await Dio().delete('http://localhost:3000/process/' + processId);
+    //   print('ciwan mk');
+    //   Get.back();
+    //   // changePasswordShow();
+
+    //   return Get.back();
+    // } catch (e) {
+    //   changePasswordShow();
+    //   throw Exception(e);
+    // }
+
+    var url = Uri.parse('http://localhost:3000/process/' + processId);
+    var response = await http.delete(url).then((value) {
+      print('object');
+    });
+    print('Response status: ${response.statusCode}');
+
+    print('Response body: ${response.body}');
   }
 }

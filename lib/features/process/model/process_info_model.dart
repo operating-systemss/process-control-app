@@ -15,21 +15,21 @@ class ProcessInfoModel {
         this.ppid,
     });
 
-    double ?memory;
+    var memory;
     String ?cmd;
     int ?pid;
     String ?name;
     int ?uid;
-    double ?cpu;
+    var cpu;
     int ?ppid;
 
     factory ProcessInfoModel.fromJson(Map<String, dynamic> json) => ProcessInfoModel(
-        memory: json["memory"].toDouble(),
+        memory: json["memory"],
         cmd: json["cmd"],
         pid: json["pid"],
         name: json["name"],
         uid: json["uid"],
-        cpu: json["cpu"].toDouble(),
+        cpu: json["cpu"],
         ppid: json["ppid"],
     );
 

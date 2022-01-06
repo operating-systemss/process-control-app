@@ -40,8 +40,8 @@ class MyApp extends StatelessWidget {
           title: 'System Monitor',
           getPages: AppPages.appPages,
           defaultTransition: Transition.native,
-          theme: AppThemeLight.instance.theme,
-          home:  ProcessView(),
+          theme: ThemeData(),
+          home: ProcessView(),
         );
       },
     );

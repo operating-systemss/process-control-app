@@ -141,7 +141,7 @@ class _ProcessViewState extends State<ProcessView> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      'İsim : ' + snapshot.data!.data()['doc'][index]['name'].toString(),
+                                                      'Name : ' + snapshot.data!.data()['doc'][index]['name'].toString(),
                                                       style: const TextStyle(fontSize: 18),
                                                     ),
                                                     Text(
@@ -150,18 +150,6 @@ class _ProcessViewState extends State<ProcessView> {
                                                     ),
                                                     Text(
                                                       'Memory : ' + snapshot.data!.data()['doc'][index]['memory'].toString(),
-                                                      style: TextStyle(fontSize: 18),
-                                                    ),
-                                                    Text(
-                                                      'PID : ' + snapshot.data!.data()['doc'][index]['pid'].toString(),
-                                                      style: TextStyle(fontSize: 18),
-                                                    ),
-                                                    Text(
-                                                      'PPID : ' + snapshot.data!.data()['doc'][index]['ppid'].toString(),
-                                                      style: TextStyle(fontSize: 18),
-                                                    ),
-                                                    Text(
-                                                      'UID : ' + snapshot.data!.data()['doc'][index]['uid'].toString(),
                                                       style: TextStyle(fontSize: 18),
                                                     ),
                                                   ],
